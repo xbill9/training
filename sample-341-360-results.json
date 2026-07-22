@@ -1,0 +1,122 @@
+[
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31823",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31823",
+    "completed": null,
+    "evidence": "Error: page.goto: net::ERR_CONNECTION_CLOSED at https://partner.cloudskillsboost.google/catalog_lab/31823\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/31823\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5380",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5380",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/5380\" is interrupted by another navigation to \"chrome-error://chromewebdata/\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/5380\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.skills.google/catalog_lab/32542",
+    "url": "https://partner.skills.google/catalog_lab/32542",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.skills.google/catalog_lab/32542\" is interrupted by another navigation to \"https://partner.skills.google/focuses/121453?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.skills.google/catalog_lab/32542\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/32581",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/32581",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/32581\" is interrupted by another navigation to \"https://partner.skills.google/focuses/133558?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/32581\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/1307",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/1307",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/1307\" is interrupted by another navigation to \"https://partner.skills.google/focuses/132326?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/1307\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6481",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6481",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/6481\" is interrupted by another navigation to \"https://partner.skills.google/focuses/18085?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/6481\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6484",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6484",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/6484\" is interrupted by another navigation to \"https://partner.skills.google/focuses/64769?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/6484\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/1832",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/1832",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/1832\" is interrupted by another navigation to \"https://partner.skills.google/focuses/64768?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/1832\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6663",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6663",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/6663\" is interrupted by another navigation to \"https://partner.skills.google/focuses/13474?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/6663\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31667",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31667",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/31667\" is interrupted by another navigation to \"https://partner.skills.google/focuses/124762?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/31667\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31666",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31666",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/31666\" is interrupted by another navigation to \"https://partner.skills.google/focuses/100262?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/31666\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31283",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31283",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/31283\" is interrupted by another navigation to \"https://partner.skills.google/focuses/100258?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/31283\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5067",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5067",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/5067\" is interrupted by another navigation to \"https://partner.skills.google/focuses/102559?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/5067\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4682",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4682",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/4682\" is interrupted by another navigation to \"https://partner.skills.google/focuses/115677?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/4682\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4599",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4599",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/4599\" is interrupted by another navigation to \"https://partner.skills.google/focuses/32742?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/4599\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4544",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4544",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/4544\" is interrupted by another navigation to \"https://partner.skills.google/focuses/32741?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/4544\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4439",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4439",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/4439\" is interrupted by another navigation to \"https://partner.skills.google/focuses/32740?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/4439\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4681",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4681",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/4681\" is interrupted by another navigation to \"https://partner.skills.google/focuses/32739?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/4681\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4068",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4068",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/4068\" is interrupted by another navigation to \"https://partner.skills.google/focuses/32743?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/4068\", waiting until \"commit\"\u001b[22m\n"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31996",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31996",
+    "completed": null,
+    "evidence": "Error: page.goto: Navigation to \"https://partner.cloudskillsboost.google/catalog_lab/31996\" is interrupted by another navigation to \"https://partner.skills.google/focuses/21107?parent=catalog\"\nCall log:\n\u001b[2m  - navigating to \"https://partner.cloudskillsboost.google/catalog_lab/31996\", waiting until \"commit\"\u001b[22m\n"
+  }
+]

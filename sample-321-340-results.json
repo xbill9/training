@@ -1,0 +1,122 @@
+[
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4604",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4604",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5925",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5925",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Running a Dedicated Ethereum RPC Node in Google Cloud This lab may incorpor"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/3522",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/3522",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/3521",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/3521",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31644",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31644",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Introduction to Migration Center Servers Assessments This lab may incorpora"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5825",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5825",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.skills.google/catalog_lab/32613",
+    "url": "https://partner.skills.google/catalog_lab/32613",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Configure Global Extended Application LB using HTTPS This lab may incorpora"
+  },
+  {
+    "course": "https://partner.skills.google/catalog_lab/32656",
+    "url": "https://partner.skills.google/catalog_lab/32656",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.skills.google/catalog_lab/48833",
+    "url": "https://partner.skills.google/catalog_lab/48833",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Migrate VPC Firewall Rules to Global Policies This lab may incorporate AI t"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5400",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5400",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5408",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5408",
+    "completed": true,
+    "evidence": "100% complete"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/32339",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/32339",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Exporting Conversational Agents Logs to BigQuery for Analytics This lab may"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5139",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5139",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: Enterprise Data Warehouse to BigQuery Job Orchestration This lab may"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5133",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5133",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5131",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5131",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/3679",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/3679",
+    "completed": true,
+    "evidence": "100% complete"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6562",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6562",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Build a BI Dashboard Using Google Looker Studio and BigQuery —/100 Lab setu"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31594",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31594",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6350",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6350",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/2747",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/2747",
+    "completed": true,
+    "evidence": "100% complete"
+  }
+]

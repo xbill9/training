@@ -1,0 +1,122 @@
+[
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1029",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1029",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/498",
+    "url": "https://partner.cloudskillsboost.google/course_templates/498",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1013",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1013",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1326",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1326",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1021",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1021",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1009",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1009",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1015",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1015",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1016",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1016",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1014",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1014",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1018",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1018",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1002",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1002",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1011",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1011",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/872",
+    "url": "https://partner.cloudskillsboost.google/course_templates/872",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1446",
+    "url": "https://partner.skills.google/course_templates/1446",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1600",
+    "url": "https://partner.skills.google/course_templates/1600",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5898",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5898",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5356",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5356",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: SQL Server Performance Analysis and Tuning with Cloud SQL This lab m"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6439",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6439",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6005",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6005",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: Cloud SQL for PostgreSQL Promote Replicas for Disaster Recovery This"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6037",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6037",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: Cloud SQL for MySQL Disaster Recovery This lab may incorporate AI to"
+  }
+]

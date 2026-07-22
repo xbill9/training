@@ -1,0 +1,24 @@
+{
+  "name": "dri-course-checker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Check Delivery Readiness Portal courses against Google Skills for Partners completion status.",
+  "bin": {
+    "dri-course-checker": "./src/cli.js"
+  },
+  "scripts": {
+    "auth": "node src/cli.js auth",
+    "scrape": "node src/cli.js scrape",
+    "scan": "node src/cli.js scan",
+    "check": "node src/cli.js check",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "playwright": "^1.55.0"
+  }
+}

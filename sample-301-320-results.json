@@ -1,0 +1,122 @@
+[
+  {
+    "course": "https://partner.skills.google/catalog_lab/32688",
+    "url": "https://partner.skills.google/catalog_lab/32688",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31678",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31678",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Migrating to AlloyDB from PostgreSQL Using PostgreSQL Tools This lab may in"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31677",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31677",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/2570",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/2570",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31675",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31675",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/3733",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/3733",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5379",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5379",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: Cloud Spanner schema conversion and data movement This lab may incor"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6036",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6036",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: AWS DynamoDB migration to Cloud Spanner This lab may incorporate AI "
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31201",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31201",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/2775",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/2775",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6159",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6159",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31053",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31053",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/5170",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/5170",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4997",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4997",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next [DRI]: Implementing Private Google Access for VPC Service Controls This lab"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/4998",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/4998",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6721",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6721",
+    "completed": true,
+    "evidence": "100% complete"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6723",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6723",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Detect and Investigate Threats with Security Command Center This lab may in"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6724",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6724",
+    "completed": false,
+    "evidence": "Partner 12 navigate_next Analyze Findings with Security Command Center This lab may incorporate AI t"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/31557",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/31557",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/catalog_lab/6677",
+    "url": "https://partner.cloudskillsboost.google/catalog_lab/6677",
+    "completed": null,
+    "evidence": "Page failed to load or render"
+  }
+]

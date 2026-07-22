@@ -1,0 +1,62 @@
+[
+  {
+    "course": "https://partner.skills.google/course_templates/1567",
+    "url": "https://partner.skills.google/course_templates/1567",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1648",
+    "url": "https://partner.skills.google/course_templates/1648",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1754",
+    "url": "https://partner.skills.google/course_templates/1754",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1077",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1077",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1568",
+    "url": "https://partner.skills.google/course_templates/1568",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1248",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1248",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1246",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1246",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1664",
+    "url": "https://partner.skills.google/course_templates/1664",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1632",
+    "url": "https://partner.skills.google/course_templates/1632",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1665",
+    "url": "https://partner.skills.google/course_templates/1665",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  }
+]

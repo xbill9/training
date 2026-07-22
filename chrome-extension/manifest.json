@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "DRI Course Completion Checker",
+  "version": "1.0.0",
+  "description": "Checks Delivery Readiness Portal course links using your signed-in Google Skills session.",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "host_permissions": [
+    "https://delivery-readiness-portal.cloud.google/*",
+    "https://partner.skills.google/*",
+    "https://partner.cloudskillsboost.google/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Check DRI courses",
+    "default_popup": "popup.html"
+  }
+}

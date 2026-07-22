@@ -1,0 +1,8 @@
+node_modules/
+.browser-profile/
+.browser-profile-readiness/
+.browser-profile-skills/
+playwright-report/
+test-results/
+*.csv
+*.jsonl

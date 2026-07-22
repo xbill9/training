@@ -1,0 +1,62 @@
+[
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/649",
+    "url": "https://partner.cloudskillsboost.google/course_templates/649",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/827",
+    "url": "https://partner.cloudskillsboost.google/course_templates/827",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/1090",
+    "url": "https://partner.cloudskillsboost.google/course_templates/1090",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/829",
+    "url": "https://partner.cloudskillsboost.google/course_templates/829",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/830",
+    "url": "https://partner.cloudskillsboost.google/course_templates/830",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.skills.google/course_templates/1670",
+    "url": "https://partner.skills.google/course_templates/1670",
+    "completed": false,
+    "evidence": "No completion badge; redirected to https://partner.skills.google/"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/832",
+    "url": "https://partner.cloudskillsboost.google/course_templates/832",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/643",
+    "url": "https://partner.cloudskillsboost.google/course_templates/643",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/828",
+    "url": "https://partner.cloudskillsboost.google/course_templates/828",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  },
+  {
+    "course": "https://partner.cloudskillsboost.google/course_templates/654",
+    "url": "https://partner.cloudskillsboost.google/course_templates/654",
+    "completed": true,
+    "evidence": "Completion badge available: Checked checkbox found"
+  }
+]
