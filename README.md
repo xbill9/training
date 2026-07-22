@@ -61,3 +61,8 @@ Exit status is `0` when every discovered course is complete, `2` when any course
 - It never stores passwords. Authentication is performed directly in Google's browser pages.
 - Portal markup can change. Use the selector options rather than editing code when possible.
 - If Google Skills pauses on a sign-in or account-selection page, complete it in the opened browser. The terminal now prints the exact course and URL being processed.
+
+## AI Configuration
+
+For guidelines on pair-programming and context optimization with Gemini and other AI tools, see [GEMINI.md](GEMINI.md).
+
