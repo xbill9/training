@@ -29,3 +29,13 @@ test("keeps old courses and updates matching URLs", async () => {
   assert.match(output, /\[B\].*❔ UNKNOWN/);
   assert.equal((output.match(/https:\/\/partner\.skills\.google\/a/g) || []).length, 1);
 });
+
+test("does not downgrade a definitive status to unknown", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "dri-md-"));
+  const file = join(directory, "completions.md");
+  await updateMarkdownDb(file, [{ course: "A", url: "https://partner.skills.google/a", completed: false, evidence: "20%" }]);
+  await updateMarkdownDb(file, [{ course: "A", url: "https://partner.skills.google/a", completed: null, evidence: "server error" }]);
+  const output = await readFile(file, "utf8");
+  assert.match(output, /\[A\].*❌ NOT COMPLETED/);
+  assert.doesNotMatch(output, /❔ UNKNOWN/);
+});

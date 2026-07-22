@@ -51,7 +51,13 @@ export async function updateMarkdownDb(file, currentResults, checkedAt = new Dat
     if (error.code !== "ENOENT") throw error;
   }
   const byUrl = new Map(previous.map((item) => [item.url, item]));
-  for (const item of currentResults) byUrl.set(item.url, item);
+  for (const item of currentResults) {
+    const existing = byUrl.get(item.url);
+    // Never downgrade a definitive status to unknown: an inconclusive check
+    // (e.g. Google's transient 500 page) says nothing about the course.
+    if (item.completed === null && existing && existing.completed !== null) continue;
+    byUrl.set(item.url, item);
+  }
   const merged = [...byUrl.values()].sort((a, b) => a.course.localeCompare(b.course));
   await writeFile(file, renderMarkdown(merged, checkedAt));
   return merged;
