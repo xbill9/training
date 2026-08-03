@@ -17,7 +17,9 @@
     "paths-scrape": "node src/cli.js paths-scrape",
     "paths-scan": "node src/cli.js paths-scan",
     "test": "node --test",
-    "mcp": "node src/mcp-server.js"
+    "mcp": "node src/mcp-server.js",
+    "mcp:py": "python3 mcp-server/server.py",
+    "test:py": "python3 -m unittest discover -s mcp-server -t mcp-server"
   },
   "engines": {
     "node": ">=22"

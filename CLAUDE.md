@@ -28,6 +28,8 @@ There is also an optional `chrome-extension/` (MV3) that performs the course che
 | `src/next-up.js` | Rank outstanding work into `next-up.md` (quick wins, leverage, stalled) |
 | `src/mcp-server.js` | MCP server (stdio) exposing the database as tools |
 | `src/profile-lock.js` | Detect and clear stale Chromium `SingletonLock` files |
+| `mcp-server/` | Python MCP server (stdio) wrapping the whole CLI; every tool is named `partner_*` |
+| `mcp-server/worklist.mjs` | The only bridge from the Python server to `src/next-up.js` ranking |
 | `docs/chrome-scan.md` | Zero-Playwright capture: DevTools snippet + `paths-import` |
 | `test/` | `node --test` unit tests over the pure modules |
 | `courses.json`, `paths.json` | Cumulative JSON caches of discovered links |
@@ -41,7 +43,9 @@ npm run scrape    # DRI portal -> courses.json
 npm run scan      # courses.json -> completions.md
 npm run check     # scrape + scan (default command)
 npm test          # node --test
-npm run mcp       # MCP stdio server over the Markdown database
+npm run mcp       # Node MCP stdio server over the Markdown database
+npm run mcp:py    # Python MCP stdio server over the whole CLI (mcp-server/)
+python3 -m unittest discover -s mcp-server -t mcp-server   # its tests
 
 node src/cli.js paths-scrape   # Skills catalog -> paths.json
 node src/cli.js paths-scan     # paths.json -> paths.md + activities.md
@@ -68,9 +72,11 @@ Exit codes: `0` all complete, `2` something outstanding/unknown, `1` scraper or 
 - **Never use a virtualenv or any other sandboxed dependency environment** (`venv`, `virtualenv`, `conda`, `pipenv`). Install into the system/global environment.
 - **Always aim for the latest stack** — newest packages, runtimes, compilers. When a current version breaks something, **fix the breakage; never downgrade or pin back**. Chasing old packages accumulates upgrade debt that turns into a painful migration later.
 - The MCP server's read tools must parse the Markdown files, never a side cache — the files are the database. Its write tools must call the same `updatePathsDb` / `updateNextUp` the CLI uses, so both entry points produce identical output. Keep the Playwright import lazy so read tools stay cheap.
+- The Python server in `mcp-server/` follows the same rule from the other side: it never writes a tracker and never ranks work itself. Actions shell out to `src/cli.js`, and `partner_next_up` shells out to `mcp-server/worklist.mjs`, which calls `buildWorklist` — so the tool cannot disagree with `next-up.md`. Its parsers mirror `paths-db.js` / `markdown-db.js`; change a column and `mcp-server/test_server.py` should fail.
+- Keep the two servers' tool names disjoint. The Node server owns the bare names (`next_up`, `list_paths`, …); everything in `mcp-server/` is `partner_*` so both — plus a server for the public `skills.google` catalog — can be registered at once.
 - `test/mcp-server.test.js` drives the server over real stdio JSON-RPC. It spawns a child per test, so it is sensitive to a loaded machine — a heavy background job can push startup past the 20s timeout.
 - Put logic worth testing in the pure modules (`course-links`, `status`, `path-status`, `*-db`) rather than inside Playwright callbacks — that is where the test suite can reach it.
 
 ## Docs
 
-`README.md` is the user-facing guide. `GEMINI.md` is a legacy sibling of this file; its `.geminiignore` section describes a file that does not exist in the repo.
+`README.md` is the user-facing guide. `GEMINI.md` provides Gemini / AGY pair-programming guidance and details the [`.geminiignore`](.geminiignore) context-exclusion setup.

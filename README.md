@@ -184,6 +184,20 @@ Set `TRAINING_DIR` if the server runs from outside the repository; it defaults t
 
 Read tools parse the Markdown files directly — the files remain the only source of truth, and a refresh through MCP writes exactly what `npm run paths` writes. Playwright is imported lazily, so read-only tools never pay for it.
 
+### Python MCP server (`mcp-server/`)
+
+A second, wider server lives in [`mcp-server/`](mcp-server/README.md). It covers the whole CLI rather than just the paths database — portal scrape, course scan, path discovery, browser-capture import — and runs each of those as a background job you poll, because a scan takes minutes. It also reports session health and validates URLs against the partner-only rule.
+
+```bash
+pip install --user -r mcp-server/requirements.txt
+npm run mcp:py   # shortcut to launch the Python MCP server
+
+# Register with Claude Code:
+claude mcp add partner-skills -- python3 /absolute/path/to/training/mcp-server/server.py
+```
+
+Every tool there is prefixed `partner_` (`partner_next_up`, `partner_scan_paths`, …), so it can be registered next to the Node server above — and next to a server for the public `skills.google` catalog — without a name collision. Set `PARTNER_SKILLS_REPO` if it runs from outside the repository.
+
 ## Notes
 
 - The tool supports the current `partner.skills.google` and legacy `partner.cloudskillsboost.google` course URLs.
@@ -193,5 +207,6 @@ Read tools parse the Markdown files directly — the files remain the only sourc
 
 ## AI Configuration
 
-For guidelines on pair-programming with AI tools, see [CLAUDE.md](CLAUDE.md) — project layout, commands, and the rules to work by. [GEMINI.md](GEMINI.md) covers the Gemini-specific setup and the [`.geminiignore`](.geminiignore) context exclusions.
+For guidelines on pair-programming with AI tools, see [CLAUDE.md](CLAUDE.md) for general/Claude instructions and [GEMINI.md](GEMINI.md) for Gemini AI guidelines and [`.geminiignore`](.geminiignore) context-optimization rules.
+
 

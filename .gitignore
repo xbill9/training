@@ -6,3 +6,7 @@ playwright-report/
 test-results/
 *.csv
 *.jsonl
+
+# MCP server job logs and Python bytecode.
+.mcp-jobs/
+__pycache__/
