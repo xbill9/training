@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { normalizeCourseLinks } from "./course-links.js";
 import { detectCompletion } from "./status.js";
+import { clearStaleProfileLock } from "./profile-lock.js";
 
 const DEFAULT_PORTAL_URL = "https://delivery-readiness-portal.cloud.google/app/gcp-projects/manage-dri-attribute";
 
@@ -16,7 +17,7 @@ const SESSION_PROBE_URL = "https://partner.skills.google/course_templates/829";
 
 // Google's Rails error page: a server fault that says nothing about whether
 // the session is authenticated.
-function isGoogleServerErrorPage(body) {
+export function isGoogleServerErrorPage(body) {
   return body.length < 400 && /we.re sorry, but something went wrong/i.test(body);
 }
 
@@ -270,7 +271,7 @@ async function completionSnapshot(page, statusSelector) {
   };
 }
 
-async function navigate(page, url, timeoutMs = 60000) {
+export async function navigate(page, url, timeoutMs = 60000) {
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     const previousUrl = page.url();
     try {
@@ -393,31 +394,24 @@ export async function runScrape(options) {
   }
 }
 
-export async function runScan(inputPath, options) {
-  let courses = JSON.parse(readFileSync(inputPath, "utf-8"));
-  if (options.courseId) {
-    courses = courses.filter((c) => {
-      try {
-        const pathname = new URL(c.href).pathname;
-        return pathname.endsWith(`/${options.courseId}`) || pathname.includes(`/${options.courseId}/`);
-      } catch {
-        return c.href.includes(options.courseId);
-      }
-    });
-    if (!courses.length) {
-      throw new Error(`No Google Skills course matching ID "${options.courseId}" was found in the input list.`);
-    }
-  }
+function skillsStateFile(profile) {
+  return join(profile, "skills-storage-state.json");
+}
 
-  if (options.offset > 0) {
-    courses = courses.slice(options.offset);
+// Launch the signed-in Skills browser: restore the explicit cookie snapshot and
+// top up the sibling partner domain. Shared by every scanner so the session
+// handling that took several iterations to get right lives in one place.
+export async function launchSkillsContext(options) {
+  const skillsStatePath = skillsStateFile(options.profile);
+  // A lock left behind by a killed browser makes the next launch hang waiting
+  // to hand off to a dead process. Clear it before Chromium ever sees it.
+  const lockOwner = clearStaleProfileLock(options.profile);
+  if (lockOwner) {
+    throw new Error(
+      `The browser profile ${options.profile} is in use by ${lockOwner}. `
+      + "Close that Chromium window, or pass --profile to use a different directory."
+    );
   }
-
-  if (options.limit > 0) {
-    courses = courses.slice(0, options.limit);
-  }
-
-  const skillsStatePath = join(options.profile, "skills-storage-state.json");
   const browserArgs = ["--restore-last-session"];
   if (options.browserProfile) browserArgs.push(`--profile-directory=${options.browserProfile}`);
   const context = await chromium.launchPersistentContext(options.profile, {
@@ -427,7 +421,6 @@ export async function runScan(inputPath, options) {
     viewport: { width: 1440, height: 1000 }
   });
 
-  let sessionVerified = false;
   try {
     // Skills keeps its login in session-only cookies. A normal Chromium close
     // does not reliably reactivate them, so restore our explicit snapshot.
@@ -447,6 +440,13 @@ export async function runScan(inputPath, options) {
     // sites use the same session cookie names; clobbering a live session with
     // the other domain's token invalidates it server-side and forces a fresh
     // sign-in on every run.
+    //
+    // Callers that only ever touch partner.skills.google (the paths scanner)
+    // opt out entirely: copying tokens onto a domain they never request is all
+    // risk and no benefit, and cross-domain token reuse is what made Google
+    // invalidate sessions in the first place.
+    if (options.replicateCookies === false) return context;
+
     const currentCookies = await context.cookies().catch(() => []);
     const cookieKey = (name, domain, path) => `${name}|${domain}|${path}`;
     const existing = new Set(currentCookies.map((c) => cookieKey(c.name, c.domain, c.path)));
@@ -472,7 +472,80 @@ export async function runScan(inputPath, options) {
       process.stderr.write(`[DEBUG] Copying ${replicated.length} session cookies missing on the sibling partner domain...\n`);
       await context.addCookies(replicated).catch(() => {});
     }
+    return context;
+  } catch (error) {
+    await context.close().catch(() => {});
+    throw error;
+  }
+}
 
+// "ok" when the page renders authenticated content; "retry-headful" when a
+// headless run should be retried with a visible browser before concluding
+// anything about the session. Throws only after one interactive attempt fails.
+export async function verifySkillsSession(page, options, probeUrl = SESSION_PROBE_URL) {
+  process.stderr.write(`Checking if Skills site session is valid via ${probeUrl} ...\n`);
+  await navigate(page, probeUrl);
+  if (await skillsSessionExpired(page, 15000)) {
+    if (options.headless) {
+      // Google frequently refuses an otherwise-valid session when the browser
+      // identifies as headless (HeadlessChrome user agent). Retry the whole
+      // scan with a visible browser before assuming the session is dead, so
+      // the user is never prompted for a sign-in the account does not need.
+      process.stderr.write("Session not accepted in headless mode; Google often rejects headless browsers. Retrying with a visible browser...\n");
+      return "retry-headful";
+    }
+    process.stderr.write(`Skills session has expired. Sign in once in the opened browser; waiting up to ${Math.round(options.authTimeout / 60000)} minutes...\n`);
+    // One interactive attempt only. Validate rendered authenticated content,
+    // not merely the URL, because the logged-out landing page uses the same
+    // Partner Skills hostname. Never restart or prompt again from here.
+    if (await skillsSessionExpired(page, options.authTimeout)) {
+      throw new Error("Skills authentication was not accepted after one interactive attempt; stopping to avoid a reauthentication loop.");
+    }
+  }
+  return "ok";
+}
+
+// Only persist the snapshot when the run actually saw an authenticated
+// session. Saving unconditionally used to overwrite a good snapshot with
+// logged-out cookies whenever a run failed, destroying the stored login.
+export async function saveSkillsState(context, options, sessionVerified) {
+  if (!sessionVerified) {
+    process.stderr.write("[DEBUG] Session was never verified this run; keeping the existing Skills session snapshot.\n");
+    return;
+  }
+  await context.storageState({ path: skillsStateFile(options.profile) }).catch((error) => {
+    process.stderr.write(`[WARN] Could not save Skills session state: ${error.message}\n`);
+  });
+}
+
+export async function runScan(inputPath, options) {
+  let courses = JSON.parse(readFileSync(inputPath, "utf-8"));
+  if (options.courseId) {
+    courses = courses.filter((c) => {
+      try {
+        const pathname = new URL(c.href).pathname;
+        return pathname.endsWith(`/${options.courseId}`) || pathname.includes(`/${options.courseId}/`);
+      } catch {
+        return c.href.includes(options.courseId);
+      }
+    });
+    if (!courses.length) {
+      throw new Error(`No Google Skills course matching ID "${options.courseId}" was found in the input list.`);
+    }
+  }
+
+  if (options.offset > 0) {
+    courses = courses.slice(options.offset);
+  }
+
+  if (options.limit > 0) {
+    courses = courses.slice(0, options.limit);
+  }
+
+  const context = await launchSkillsContext(options);
+
+  let sessionVerified = false;
+  try {
     const page = context.pages()[0] || await context.newPage();
 
     // Check if session is authenticated on Skills site. Probe a
@@ -482,25 +555,9 @@ export async function runScan(inputPath, options) {
     if (courses.length > 0) {
       const probeCourse = courses.find((c) => c.href.includes("/course_templates/"));
       const probeUrl = probeCourse ? probeCourse.href : SESSION_PROBE_URL;
-      process.stderr.write(`Checking if Skills site session is valid via ${probeUrl} ...\n`);
-      await navigate(page, probeUrl);
-      if (await skillsSessionExpired(page, 15000)) {
-        if (options.headless) {
-          // Google frequently refuses an otherwise-valid session when the browser
-          // identifies as headless (HeadlessChrome user agent). Retry the whole
-          // scan with a visible browser before assuming the session is dead, so
-          // the user is never prompted for a sign-in the account does not need.
-          process.stderr.write("Session not accepted in headless mode; Google often rejects headless browsers. Retrying with a visible browser...\n");
-          await context.close().catch(() => {});
-          return runScan(inputPath, { ...options, headless: false });
-        }
-        process.stderr.write(`Skills session has expired. Sign in once in the opened browser; waiting up to ${Math.round(options.authTimeout / 60000)} minutes...\n`);
-        // One interactive attempt only. Validate rendered authenticated content,
-        // not merely the URL, because the logged-out landing page uses the same
-        // Partner Skills hostname. Never restart or prompt again from here.
-        if (await skillsSessionExpired(page, options.authTimeout)) {
-          throw new Error("Skills authentication was not accepted after one interactive attempt; stopping to avoid a reauthentication loop.");
-        }
+      if (await verifySkillsSession(page, options, probeUrl) === "retry-headful") {
+        await context.close().catch(() => {});
+        return runScan(inputPath, { ...options, headless: false });
       }
       sessionVerified = true;
     }
@@ -590,16 +647,7 @@ export async function runScan(inputPath, options) {
     }
     return results;
   } finally {
-    // Only persist the snapshot when this run actually saw an authenticated
-    // session. Saving unconditionally used to overwrite a good snapshot with
-    // logged-out cookies whenever a run failed, destroying the stored login.
-    if (sessionVerified) {
-      await context.storageState({ path: skillsStatePath }).catch((error) => {
-        process.stderr.write(`[WARN] Could not save Skills session state: ${error.message}\n`);
-      });
-    } else {
-      process.stderr.write("[DEBUG] Session was never verified this run; keeping the existing Skills session snapshot.\n");
-    }
+    await saveSkillsState(context, options, sessionVerified);
     await context.close();
   }
 }

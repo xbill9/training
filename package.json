@@ -5,20 +5,27 @@
   "type": "module",
   "description": "Check Delivery Readiness Portal courses against Google Skills for Partners completion status.",
   "bin": {
-    "dri-course-checker": "./src/cli.js"
+    "dri-course-checker": "./src/cli.js",
+    "partner-training-mcp": "./src/mcp-server.js"
   },
   "scripts": {
     "auth": "node src/cli.js auth",
     "scrape": "node src/cli.js scrape",
     "scan": "node src/cli.js scan",
     "check": "node src/cli.js check",
-    "test": "node --test"
+    "paths": "node src/cli.js paths",
+    "paths-scrape": "node src/cli.js paths-scrape",
+    "paths-scan": "node src/cli.js paths-scan",
+    "test": "node --test",
+    "mcp": "node src/mcp-server.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "dependencies": {
-    "commander": "^14.0.0",
-    "playwright": "^1.55.0"
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "commander": "^15.0.0",
+    "playwright": "^1.62.1",
+    "zod": "^4.4.3"
   }
 }

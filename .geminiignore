@@ -1,0 +1,33 @@
+# Dependency lock files — thousands of redundant tokens, no signal.
+package-lock.json
+node_modules/
+
+# Live browser sessions. These are real logins; never read them into context.
+.browser-profile/
+.browser-profile-readiness/
+.browser-profile-skills/
+
+# Environment secrets, if any are ever added.
+.env
+.env.*
+!.env.example
+
+# Playwright output.
+playwright-report/
+test-results/
+
+# Media and binary assets.
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.pdf
+*.zip
+
+# Logs and bulk data exports.
+*.log
+*.csv
+*.jsonl
+
+# Bulk scan output. Source code and the Markdown trackers stay visible.
+sample-*-results.json

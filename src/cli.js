@@ -6,7 +6,18 @@ import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { chromium } from "playwright";
 import { runScrape, runScan } from "./scraper.js";
+import { runPathsScrape, runPathsScan } from "./paths-scraper.js";
 import { updateMarkdownDb } from "./markdown-db.js";
+import { updatePathsDb } from "./paths-db.js";
+import { updateNextUp } from "./next-up.js";
+import {
+  ACTIVITY_COMPLETED,
+  ACTIVITY_MISSING,
+  ACTIVITY_IN_PROGRESS,
+  ACTIVITY_UNKNOWN,
+  PATH_FINISHED,
+  PATH_OPEN
+} from "./path-status.js";
 
 const program = new Command();
 program.name("dri-course-checker").description("Check DRI-linked Google Partner Skills course completion");
@@ -180,6 +191,159 @@ program.command("check", { isDefault: true })
     await updateMarkdownDb(resolve(raw.markdown), results);
     console.log(`Updated clickable completion tracker: ${resolve(raw.markdown)}`);
     if (results.some((item) => item.completed !== true)) process.exitCode = 2;
+  });
+
+function skillsOptions(raw) {
+  return {
+    ...raw,
+    profile: resolve(raw.profile),
+    browserProfile: raw.browserProfile,
+    // Opt-in, unlike `scan`. Google frequently refuses a perfectly good session
+    // when the browser identifies as headless, and the recovery is a second
+    // launch — so the reliable mode is the default one.
+    headless: Boolean(raw.headless),
+    authTimeout: Number(raw.authTimeout) * 1000,
+    settleTime: Number(raw.settleTime)
+  };
+}
+
+function addSkillsOptions(command) {
+  return command
+    .option("--profile <directory>", "Partner Skills browser profile", ".browser-profile-skills")
+    .option("--browser-profile <name>", "Chromium profile inside the user-data directory", "Profile 1")
+    .option("--auth-timeout <seconds>", "time allowed for interactive sign-in", "300")
+    .option("--settle-time <milliseconds>", "wait for client-rendered content", "2500")
+    .option("--channel <name>", "Playwright browser channel, e.g. chrome")
+    .option("--headless", "run without a visible browser (Google often rejects headless sessions)");
+}
+
+async function discoverPathsToFile(options, outputFile) {
+  const paths = await runPathsScrape(options);
+  const outputPath = resolve(outputFile);
+  let cumulative = [];
+  try {
+    const { readFileSync, existsSync } = await import("node:fs");
+    if (existsSync(outputPath)) cumulative = JSON.parse(readFileSync(outputPath, "utf-8"));
+  } catch {}
+  const byId = new Map(cumulative.map((path) => [String(path.id), path]));
+  for (const path of paths) {
+    const existing = byId.get(String(path.id));
+    byId.set(String(path.id), { ...existing, ...path, title: path.title || existing?.title || "" });
+  }
+  const merged = [...byId.values()].sort((a, b) => Number(a.id) - Number(b.id));
+  await writeFile(outputPath, `${JSON.stringify(merged, null, 2)}\n`);
+  console.log(`Discovered ${paths.length} paths. Merged total unique paths: ${merged.length}. Saved to: ${outputPath}`);
+  return outputPath;
+}
+
+async function scanPathsToMarkdown(inputFile, options, raw, precomputed = null, linkStatus = null) {
+  const results = precomputed || await runPathsScan(resolve(inputFile), options);
+  if (raw.json) await writeFile(raw.json, `${JSON.stringify(results, null, 2)}\n`);
+  const { paths, activities } = await updatePathsDb(
+    resolve(raw.pathsMarkdown),
+    resolve(raw.activitiesMarkdown),
+    results,
+    new Date().toISOString(),
+    linkStatus
+  );
+  const worklist = await updateNextUp(resolve(raw.nextUp || "next-up.md"), paths, activities);
+  const finished = paths.filter((path) => path.status === PATH_FINISHED).length;
+  const open = paths.filter((path) => path.status === PATH_OPEN).length;
+  const outstanding = activities.filter((activity) => activity.status !== ACTIVITY_COMPLETED).length;
+  const issues = activities.filter((activity) => [ACTIVITY_IN_PROGRESS, ACTIVITY_MISSING, ACTIVITY_UNKNOWN]
+    .includes(activity.status)).length;
+  console.log(`\n${paths.length} paths tracked: ${finished} finished, ${open} open.`);
+  console.log(`${activities.length} activities tracked: ${outstanding} outstanding, ${issues} needing attention.`);
+  console.log(`Updated ${resolve(raw.pathsMarkdown)}, ${resolve(raw.activitiesMarkdown)} and ${resolve(raw.nextUp || "next-up.md")}`);
+  const wins = worklist.quickWins.slice(0, 10);
+  const winPaths = new Set(wins.flatMap((g) => g.completes.map((p) => p.id))).size;
+  console.log(`Next up: ${worklist.unique} distinct activities left; top 10 would finish ${winPaths} paths.`);
+  if (outstanding > 0) process.exitCode = 2;
+}
+
+addSkillsOptions(program.command("paths-scrape")
+  .description("discover every learning path in the Skills catalog and cache it as JSON"))
+  .option("--output <file>", "JSON file to save discovered paths", "paths.json")
+  .option("--max-pages <count>", "safety limit on catalog pages to walk", "50")
+  .action(async (raw) => {
+    await discoverPathsToFile({ ...skillsOptions(raw), maxPages: Number(raw.maxPages) || 50 }, raw.output);
+  });
+
+addSkillsOptions(program.command("paths-scan")
+  .description("read each cached path page and update the paths/activities Markdown database"))
+  .option("--input <file>", "JSON file containing discovered paths", "paths.json")
+  .option("--paths-markdown <file>", "Markdown database of paths", "paths.md")
+  .option("--activities-markdown <file>", "Markdown database of path activities", "activities.md")
+  .option("--next-up <file>", "ranked worklist generated from the database", "next-up.md")
+  .option("--json <file>", "also save the raw scan as JSON")
+  .option("--path-id <id>", "scan a single path by ID (e.g. 12)")
+  .option("--offset <count>", "skip the first N cached paths", "0")
+  .option("--limit <count>", "limit scanning to the first N paths", "0")
+  .option("--verify-links", "also check that outstanding activity links still resolve")
+  .option("--navigate", "open each path page instead of fetching it (slower fallback)")
+  .action(async (raw) => {
+    const options = {
+      ...skillsOptions(raw),
+      navigate: Boolean(raw.navigate),
+      pathId: raw.pathId ? String(raw.pathId).trim() : null,
+      offset: Number(raw.offset) || 0,
+      limit: Number(raw.limit) || 0,
+      verifyLinks: Boolean(raw.verifyLinks)
+    };
+    await scanPathsToMarkdown(raw.input, options, raw);
+  });
+
+addSkillsOptions(program.command("paths")
+  .description("discover paths and scan them in one run"))
+  .option("--input <file>", "JSON cache of discovered paths", "paths.json")
+  .option("--paths-markdown <file>", "Markdown database of paths", "paths.md")
+  .option("--activities-markdown <file>", "Markdown database of path activities", "activities.md")
+  .option("--next-up <file>", "ranked worklist generated from the database", "next-up.md")
+  .option("--json <file>", "also save the raw scan as JSON")
+  .option("--offset <count>", "skip the first N cached paths", "0")
+  .option("--limit <count>", "limit scanning to the first N paths", "0")
+  .option("--max-pages <count>", "safety limit on catalog pages to walk", "50")
+  .option("--verify-links", "also check that outstanding activity links still resolve")
+  .option("--navigate", "open each path page instead of fetching it (slower fallback)")
+  .action(async (raw) => {
+    const base = { ...skillsOptions(raw), navigate: Boolean(raw.navigate) };
+    const cacheFile = await discoverPathsToFile({ ...base, maxPages: Number(raw.maxPages) || 50 }, raw.input);
+    await scanPathsToMarkdown(cacheFile, {
+      ...base,
+      pathId: null,
+      offset: Number(raw.offset) || 0,
+      limit: Number(raw.limit) || 0,
+      verifyLinks: Boolean(raw.verifyLinks)
+    }, raw);
+  });
+
+program.command("paths-import <file>")
+  .description("build the Markdown database from a scan JSON captured in the browser (no Playwright)")
+  .option("--paths-markdown <file>", "Markdown database of paths", "paths.md")
+  .option("--activities-markdown <file>", "Markdown database of path activities", "activities.md")
+  .option("--next-up <file>", "ranked worklist generated from the database", "next-up.md")
+  .action(async (file, raw) => {
+    const { readFileSync } = await import("node:fs");
+    const scanned = JSON.parse(readFileSync(resolve(file), "utf-8"));
+    const results = Array.isArray(scanned) ? scanned : scanned.results;
+    if (!Array.isArray(results)) throw new Error(`${file} does not contain a scan array`);
+    // Paths the capture could not read still belong in the database as UNKNOWN.
+    // Dropping them would quietly shrink the catalog and hide, say, a path this
+    // account is not entitled to open.
+    const failed = (Array.isArray(scanned?.failed) ? scanned.failed : []).map(([id, reason]) => ({
+      id: String(id),
+      title: `Path ${id}`,
+      url: `https://partner.skills.google/paths/${id}`,
+      activities: [],
+      progress: null,
+      unreadable: true,
+      evidence: typeof reason === "number" ? `HTTP ${reason} for /paths/${id}` : String(reason)
+    }));
+    if (failed.length) console.log(`${failed.length} path(s) could not be read; recording them as unknown.`);
+    // Optional {url: status} map from a link check run alongside the scan.
+    const linkStatus = scanned?.linkStatus && typeof scanned.linkStatus === "object" ? scanned.linkStatus : null;
+    if (linkStatus) console.log(`Applying ${Object.keys(linkStatus).length} verified link statuses.`);
+    await scanPathsToMarkdown(null, null, raw, [...results, ...failed], linkStatus);
   });
 
 program.parseAsync().catch((error) => {
