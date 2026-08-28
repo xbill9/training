@@ -31,6 +31,7 @@ There is also an optional `chrome-extension/` (MV3) that performs the course che
 | `mcp-server/` | Python MCP server (stdio) wrapping the whole CLI; every tool is named `partner_*` |
 | `mcp-server/worklist.mjs` | The only bridge from the Python server to `src/next-up.js` ranking |
 | `docs/chrome-scan.md` | Zero-Playwright capture: DevTools snippet + `paths-import` |
+| `docs/lab-marking.md` | How Qwiklabs "Check my progress" grading works, and how to debug a lab that will not mark |
 | `test/` | `node --test` unit tests over the pure modules |
 | `courses.json`, `paths.json` | Cumulative JSON caches of discovered links |
 | `ISSUES.md` | Write-up of the auth/redirect problems and how they were solved — **read this before touching session handling** |
@@ -79,4 +80,9 @@ Exit codes: `0` all complete, `2` something outstanding/unknown, `1` scraper or 
 
 ## Docs
 
-`README.md` is the user-facing guide. `GEMINI.md` provides Gemini / AGY pair-programming guidance and details the [`.geminiignore`](.geminiignore) context-exclusion setup.
+`README.md` is the user-facing guide. [`docs/lab-marking.md`](docs/lab-marking.md) is
+reference knowledge rather than anything this CLI does — the `run_step.json` /
+`show_spl.json` grading endpoints, and the bisect method for a lab task that scores 0
+with no message. Read it before concluding a lab's grader is broken.
+
+`GEMINI.md` provides Gemini / AGY pair-programming guidance and details the [`.geminiignore`](.geminiignore) context-exclusion setup.

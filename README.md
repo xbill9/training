@@ -204,6 +204,7 @@ Every tool there is prefixed `partner_` (`partner_next_up`, `partner_scan_paths`
 - It never stores passwords. Authentication is performed directly in Google's browser pages.
 - Portal markup can change. Use the selector options rather than editing code when possible.
 - If Google Skills pauses on a sign-in or account-selection page, complete it in the opened browser. The terminal now prints the exact course and URL being processed.
+- When a lab's "Check my progress" refuses to mark work you know is done, see [`docs/lab-marking.md`](docs/lab-marking.md) — how Qwiklabs grading actually works, and how to make a failing check tell you what it wants.
 
 ## AI Configuration
 
