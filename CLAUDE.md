@@ -52,6 +52,7 @@ node src/cli.js paths-scrape   # Skills catalog -> paths.json
 node src/cli.js paths-scan     # paths.json -> paths.md + activities.md
 node src/cli.js paths          # both in one run
 node src/cli.js paths-import f.json   # build the DB from a browser-captured scan
+node src/cli.js completions-import f.json   # merge a browser-captured course check into completions.md
 ```
 
 Exit codes: `0` all complete, `2` something outstanding/unknown, `1` scraper or config error. The `2` is meaningful output, not a failure — don't "fix" it.

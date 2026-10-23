@@ -177,3 +177,130 @@ A path that returns `403` is one this account cannot open (path `2268` was the
 only one at the last scan). Those land in the database as `❔ UNKNOWN` rather
 than being silently dropped, and an inconclusive read never overwrites a status
 an earlier run established.
+
+## Checking DRI course completion
+
+The same approach refreshes `completions.md`. Two pages hold everything it
+needs, and both are server-rendered:
+
+- **Course templates:** `/course_templates/<id>/badge` says *You've completed
+  …* when the course is earned and *Access forbidden* when it is not. A
+  signed-out tab gets *Access forbidden* for every course, so the script checks
+  for a redirect to `/users/sign_in` and stops.
+- **Labs:** a lab page renders its score in script, so the raw HTML reads
+  `—/100` whether the lab was passed or not. Use the activity history instead:
+  `/profile/activity?q[activity_type_in][]=LabInstance&per_page=100` lists every
+  lab attempt with a `passed` flag, in a `ql-table` whose `data` attribute is
+  JSON. The DRI links are `catalog_lab/<id>`, which redirect to the
+  `/focuses/<id>` that the history uses, so each one is fetched once to learn
+  its focus id.
+
+Everything runs from a `partner.skills.google` tab. Fetch the
+`partner.cloudskillsboost.google` links through the new host (only the path is
+used), since a cross-origin fetch would be blocked. The original URL stays the
+key in the database.
+
+1. Print the course list from the cache, and copy the line it prints:
+
+   ```bash
+   node -e 'const c=require("./courses.json");console.log("window.__courseList="+JSON.stringify(c.map(({href,label})=>({href,label}))))'
+   ```
+
+2. In a signed-in `https://partner.skills.google/paths` tab, paste that into the
+   Console, then paste the script below. It goes **one request at a time**, for
+   the same reason as the link check above. The history alone is about 27
+   pages at ~13s each on a slow day.
+3. It saves `completions-scan.json`. Import it:
+
+   ```bash
+   npm run completions-import -- ~/Downloads/completions-scan.json
+   ```
+
+```js
+(async () => {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const parse = (h) => new DOMParser().parseFromString(h, 'text/html');
+  const text = (d) => (d.querySelector('main') || d.body).innerText.replace(/\s+/g, ' ');
+  const sorry = (h) => /we.re sorry, but something went wrong/i.test(h.slice(0, 3000));
+  const get = async (u, ms = 30000) => {
+    const ac = new AbortController(); const t = setTimeout(() => ac.abort(), ms);
+    try { const r = await fetch(u, { credentials: 'include', signal: ac.signal }); return { r, html: await r.text() }; }
+    catch (e) { return { err: e.name === 'AbortError' ? 'timeout' : String(e).slice(0, 60) }; }
+    finally { clearTimeout(t); }
+  };
+  const retry = async (u, ms) => {
+    let res;
+    for (let a = 0; a < 3; a++) {
+      res = await get(u, ms);
+      if (!res.err && res.r.status < 500 && !sorry(res.html)) break;
+      await sleep(3000 * (a + 1));
+    }
+    // A signed-out badge page also says "Access forbidden", which would record
+    // every course as not completed. Stop rather than write that.
+    if (!res.err && new URL(res.r.url).pathname.startsWith('/users/sign_in')) throw new Error('signed out: sign in and rerun');
+    return res;
+  };
+
+  // 1. Every lab attempt: {focusId: {passed, best, last, n}}.
+  const labs = {};
+  for (let page = 1; page <= 40; page++) {
+    const { html, err } = await retry(`/profile/activity?q%5Bactivity_type_in%5D%5B%5D=LabInstance&per_page=100&page=${page}`);
+    if (err) { console.warn('history page', page, err); continue; }
+    const t = parse(html).querySelector('ql-table.activities-table');
+    const rows = t ? JSON.parse(t.getAttribute('data')) : [];
+    if (!rows.length) break;
+    for (const row of rows) {
+      const m = row.name.match(/\/focuses\/(\d+)/);
+      if (!m) continue;
+      const e = labs[m[1]] ||= { passed: false, best: null, last: null, n: 0 };
+      e.n++;
+      if (row.passed) { e.passed = true; if (!e.last || row.ended > e.last) e.last = row.ended; }
+      if (row.score != null && (e.best == null || Number(row.score) > e.best)) e.best = Number(row.score);
+    }
+    console.log(`history page ${page}`);
+    await sleep(300);
+  }
+
+  // 2. Each DRI link, one at a time.
+  const results = [];
+  for (const [i, c] of window.__courseList.entries()) {
+    const path = new URL(c.href).pathname;
+    const rec = { url: c.href, course: c.label };
+    let m;
+    if ((m = path.match(/\/course_templates\/(\d+)/))) {
+      const res = await retry(`/course_templates/${m[1]}/badge`);
+      const t = res.err ? '' : text(parse(res.html));
+      if (res.err) Object.assign(rec, { completed: null, evidence: `badge page ${res.err}` });
+      else if (/You've completed/.test(t)) Object.assign(rec, { completed: true, evidence: 'Completion badge page: "You\'ve completed"' });
+      else if (/Access forbidden/i.test(t)) Object.assign(rec, { completed: false, evidence: `Badge page: Access forbidden (HTTP ${res.r.status})` });
+      else Object.assign(rec, { completed: null, evidence: `Badge page unrecognized (HTTP ${res.r.status})` });
+    } else if ((m = path.match(/\/catalog_lab\/(\d+)/))) {
+      const res = await retry(`/catalog_lab/${m[1]}`, 60000);   // labs can take ~30s
+      const landed = res.err ? null : new URL(res.r.url).pathname;
+      const f = landed && landed.match(/\/focuses\/(\d+)/);
+      const h = f && labs[f[1]];
+      if (res.err) Object.assign(rec, { completed: null, evidence: `lab page ${res.err}` });
+      else if (!f) Object.assign(rec, { completed: null, evidence: `catalog_lab landed on ${landed}` });
+      else if (h && h.passed) Object.assign(rec, { completed: true, evidence: `Activity history: passed lab /focuses/${f[1]} on ${h.last.slice(0, 10)}` });
+      else Object.assign(rec, { completed: false, evidence: h ? `Activity history: ${h.n} attempt(s) at /focuses/${f[1]}, none passed` : `Activity history: no attempts at /focuses/${f[1]}` });
+    } else if ((m = path.match(/^\/paths\/(\d+)$/))) {
+      const res = await retry(`/paths/${m[1]}`);
+      const cards = res.err ? [] : [...parse(res.html).querySelectorAll('ql-activity-card')];
+      const done = cards.filter((x) => x.hasAttribute('completed')).length;
+      Object.assign(rec, { completed: cards.length ? done === cards.length : null,
+        evidence: cards.length ? `Path page: ${done}/${cards.length} activities completed` : 'path page unreadable' });
+    } else Object.assign(rec, { completed: null, evidence: 'unrecognized link' });
+    results.push(rec);
+    if ((i + 1) % 25 === 0) console.log(`${i + 1}/${window.__courseList.length}`);
+    await sleep(400);
+  }
+
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(results)], { type: 'application/json' }));
+  a.download = 'completions-scan.json';
+  a.click();
+})();
+```
+
+A link that cannot be read comes back `null`, and `completions-import` never
+lets that overwrite a status an earlier run established.

@@ -20,7 +20,8 @@ export function detectCompletion(snapshot) {
   if (signals.some((value) => COMPLETE_WORDS.test(value) && !INCOMPLETE_WORDS.test(value))) {
     return { completed: true, evidence: all };
   }
-  const percent = [...body.matchAll(/(?:^|\s)(100)\s*%\s*(?:complete|completed)?/gi)];
+  // "complete" is required: every lab page says "To score 100% you must ...".
+  const percent = [...body.matchAll(/(?:^|\s)(100)\s*%\s*(?:complete|completed)\b/gi)];
   if (percent.length) return { completed: true, evidence: "100% complete" };
   if (signals.some((value) => INCOMPLETE_WORDS.test(value)) || INCOMPLETE_WORDS.test(body)) {
     return { completed: false, evidence: all || body.substring(0, 100) };

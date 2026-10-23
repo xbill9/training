@@ -16,6 +16,8 @@
     "paths": "node src/cli.js paths",
     "paths-scrape": "node src/cli.js paths-scrape",
     "paths-scan": "node src/cli.js paths-scan",
+    "paths-import": "node src/cli.js paths-import",
+    "completions-import": "node src/cli.js completions-import",
     "test": "node --test",
     "mcp": "node src/mcp-server.js",
     "mcp:py": "python3 mcp-server/server.py",

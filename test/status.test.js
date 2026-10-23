@@ -13,6 +13,11 @@ test("does not treat not completed as completed", () => {
   assert.equal(detectCompletion({ bodyText: "Course 72% complete", signals: [], progressValues: [] }).completed, false);
 });
 
+test("lab scoring instructions are not a completion", () => {
+  const body = "Check my progress —/100 To score 100% you must successfully complete all tasks within the time period.";
+  assert.notEqual(detectCompletion({ bodyText: body, signals: [], progressValues: [] }).completed, true);
+});
+
 test("returns unknown when no status is recognizable", () => {
   assert.equal(detectCompletion({ bodyText: "Course overview", signals: [], progressValues: [] }).completed, null);
   assert.equal(detectCompletion({ bodyText: "Course overview ".repeat(30), signals: [], progressValues: [] }).completed, null);

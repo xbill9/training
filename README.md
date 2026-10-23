@@ -156,6 +156,14 @@ npm run paths-import -- scan.json
 
 `paths-import` accepts either the JSON `paths-scan --json` writes or the compact `{id, title, progress, cards: [[name, type, credentialType, completed, progress, duration, href], ...]}` form that is convenient to build in the browser. Both feed the same merge logic, so the two collection routes can be mixed run to run.
 
+Course completion works the same way: the course check in [`docs/chrome-scan.md`](docs/chrome-scan.md#checking-dri-course-completion) produces a `[{url, course, completed, evidence}, ...]` file, the shape `scan --json` writes, and
+
+```bash
+npm run completions-import -- ~/Downloads/completions-scan.json
+```
+
+merges it into `completions.md` with the same rules as `scan`.
+
 ## MCP server
 
 The same database is exposed over the Model Context Protocol, so an assistant can answer "what should I do next?" without you opening any files.

@@ -346,6 +346,30 @@ program.command("paths-import <file>")
     await scanPathsToMarkdown(null, null, raw, [...results, ...failed], linkStatus);
   });
 
+program.command("completions-import <file>")
+  .description("merge course results captured in the browser into the completion database (no Playwright)")
+  .option("--markdown <file>", "Markdown completion database", "completions.md")
+  .action(async (file, raw) => {
+    const { readFileSync } = await import("node:fs");
+    const scanned = JSON.parse(readFileSync(resolve(file), "utf-8"));
+    const records = Array.isArray(scanned) ? scanned : scanned.results;
+    if (!Array.isArray(records)) throw new Error(`${file} does not contain a results array`);
+    // Same shape `scan --json` writes; anything without a URL cannot be merged.
+    const results = records
+      .filter((item) => item && typeof item.url === "string")
+      .map(({ course, url, completed, evidence }) => ({
+        course: course || url,
+        url,
+        completed: completed === true ? true : completed === false ? false : null,
+        evidence: evidence || ""
+      }));
+    await updateMarkdownDb(resolve(raw.markdown), results);
+    const count = (value) => results.filter((item) => item.completed === value).length;
+    console.log(`Merged ${results.length} results: ${count(true)} completed, ${count(false)} not completed, ${count(null)} unknown.`);
+    console.log(`Updated clickable completion tracker: ${resolve(raw.markdown)}`);
+    if (results.some((item) => item.completed !== true)) process.exitCode = 2;
+  });
+
 program.parseAsync().catch((error) => {
   console.error(`Error: ${error.message}`);
   process.exitCode = 1;
