@@ -13,6 +13,7 @@ import {
   classifyActivity,
   classifyPath,
   formatPercent,
+  holdCompletion,
   parseActivityStatus,
   parsePathStatus,
   pathProgress,
@@ -343,6 +344,18 @@ export function mergeActivities(previous, current, scannedPathIds = new Set()) {
     const key = activityKey(item);
     const existing = byKey.get(key);
     if (item.status === ACTIVITY_UNKNOWN && existing && existing.status !== ACTIVITY_UNKNOWN) continue;
+    // Completed work that the path page now shows as not done is held for a
+    // grace period rather than downgraded on one reading (see holdCompletion).
+    // MISSING still goes through: a retired or dead activity is a real change.
+    if (existing?.status === ACTIVITY_COMPLETED
+      && (item.status === ACTIVITY_NOT_STARTED || item.status === ACTIVITY_IN_PROGRESS)) {
+      const reading = item.status === ACTIVITY_IN_PROGRESS ? "in progress" : "not started";
+      const note = holdCompletion(existing.issue, item.issue || reading, item.checkedAt);
+      if (note) {
+        byKey.set(key, { ...item, status: ACTIVITY_COMPLETED, issue: note });
+        continue;
+      }
+    }
     byKey.set(key, item);
   }
   // An activity that vanished from a path we just read successfully is retired
@@ -363,6 +376,30 @@ export function mergeActivities(previous, current, scannedPathIds = new Set()) {
   });
 }
 
+// A path's counts come from the scan, but a held completion (see
+// mergeActivities) lives only in the merged activities. Recount the paths
+// scanned this run from the merged rows so a held course still counts.
+export function reconcilePaths(paths, activities, records) {
+  const scanned = new Map(records.map((record) => [record.path.id, new Set(record.activities.map(activityKey))]));
+  return paths.map((path) => {
+    const keys = scanned.get(path.id);
+    if (!keys || path.status === PATH_UNKNOWN || !keys.size) return path;
+    const rows = activities.filter((a) => keys.has(activityKey(a)));
+    const done = rows.filter((a) => a.status === ACTIVITY_COMPLETED).length;
+    if (done === path.done) return path;
+    const share = rows.length ? done / rows.length : 0;
+    const status = rows.length && done === rows.length ? PATH_FINISHED
+      : done > 0 || path.progress > 0 ? PATH_OPEN : path.status;
+    return {
+      ...path,
+      done,
+      total: rows.length,
+      status,
+      progress: path.progress === null ? share : Math.max(path.progress, share)
+    };
+  });
+}
+
 export async function updatePathsDb(pathsFile, activitiesFile, scrapedPaths, checkedAt = new Date().toISOString(), linkStatus = null) {
   const records = scrapedPaths.map((path) => toRecords(applyLinkStatuses(normalizeScrapedPath(path), linkStatus), checkedAt));
   const scannedPathIds = new Set(
@@ -379,7 +416,9 @@ export async function updatePathsDb(pathsFile, activitiesFile, scrapedPaths, che
     scannedPathIds
   );
 
-  await writeFile(pathsFile, renderPathsMarkdown(paths, checkedAt));
+  const reconciled = reconcilePaths(paths, activities, records);
+
+  await writeFile(pathsFile, renderPathsMarkdown(reconciled, checkedAt));
   await writeFile(activitiesFile, renderActivitiesMarkdown(activities, checkedAt));
-  return { paths, activities };
+  return { paths: reconciled, activities };
 }

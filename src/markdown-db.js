@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { holdCompletion } from "./path-status.js";
 
 function escapeCell(value) {
   return String(value ?? "").replaceAll("|", "\\|").replaceAll("\n", " ").trim();
@@ -56,6 +57,15 @@ export async function updateMarkdownDb(file, currentResults, checkedAt = new Dat
     // Never downgrade a definitive status to unknown: an inconclusive check
     // (e.g. Google's transient 500 page) says nothing about the course.
     if (item.completed === null && existing && existing.completed !== null) continue;
+    // A completed course that now reads as not completed is held for a grace
+    // period (see holdCompletion): Google's badge pages 403 on bad days.
+    if (item.completed === false && existing?.completed === true) {
+      const note = holdCompletion(existing.evidence, item.evidence, checkedAt);
+      if (note) {
+        byUrl.set(item.url, { ...existing, course: item.course || existing.course, evidence: note });
+        continue;
+      }
+    }
     byUrl.set(item.url, item);
   }
   const merged = [...byUrl.values()].sort((a, b) => a.course.localeCompare(b.course));

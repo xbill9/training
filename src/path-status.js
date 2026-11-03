@@ -135,3 +135,27 @@ export function pathProgress(path) {
   const share = activities.filter((a) => a.completed === true).length / activities.length;
   return headline === null ? share : Math.max(headline, share);
 }
+
+// Google Skills is unreliable about past completions: on a bad day a badge page
+// that said "You've completed" answers 403 "Access forbidden", and the path page
+// drops the course's completed flag. A completed record therefore survives a
+// single contrary reading. It stays completed, flagged "Unconfirmed since
+// <date>", and only gives way once readings have disagreed for the whole grace
+// period. A later reading that says completed clears the flag.
+export const UNCONFIRMED_GRACE_DAYS = 7;
+const UNCONFIRMED = /Unconfirmed since (\d{4}-\d{2}-\d{2})/;
+
+export function unconfirmedSince(note) {
+  const match = String(note ?? "").match(UNCONFIRMED);
+  return match ? match[1] : null;
+}
+
+// Returns the note to keep a completed record with, or null when the grace
+// period has run out and the downgrade should be accepted.
+export function holdCompletion(previousNote, reading, checkedAt = new Date().toISOString()) {
+  const today = String(checkedAt).slice(0, 10);
+  const since = unconfirmedSince(previousNote) || today;
+  const days = (Date.parse(today) - Date.parse(since)) / 86_400_000;
+  if (days >= UNCONFIRMED_GRACE_DAYS) return null;
+  return `Unconfirmed since ${since}: completed earlier; latest check read ${reading || "not completed"}`;
+}
