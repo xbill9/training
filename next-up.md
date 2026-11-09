@@ -1,19 +1,19 @@
 # Next up
 
-Generated 2026-11-03T16:39:34.496Z from [paths.md](paths.md) and [activities.md](activities.md). Regenerated on every scan.
+Generated 2026-11-09T15:51:20.170Z from [paths.md](paths.md) and [activities.md](activities.md). Regenerated on every scan.
 
-**93/231 paths finished.** 343 outstanding slots are only **216 distinct activities** (~627h) — the rest are the same course sitting in several paths.
+**92/231 paths finished.** 344 outstanding slots are only **216 distinct activities** (~626h) — the rest are the same course sitting in several paths.
 
 ## Best value: finishes a path outright
 
-The top ten below are ~11.5h of work and would complete **18 paths**.
+The top ten below are ~11.5h of work and would complete **19 paths**.
 
 - [ ] **15m** — [Oracle to Cloud Spanner using HarbourBridge Runbook](https://partner.skills.google/paths/178) — finishes **1 path** — _open from the path_
 - [ ] **1h** — [Implement Defense-in-Depth for Workspace AI](https://partner.skills.google/paths/4369/course_sessions/41341864/labs/630248) — finishes **3 paths**
 - [ ] **1.5h** — [Introduction to Migration Center Servers Assessments](https://partner.skills.google/focuses/104653?parent=catalog&path=4344) — finishes **4 paths**, appears in 8
+- [ ] **1.5h** — [Secure Agent Tools with Google Cloud Agent Identity and Auth Manager](https://partner.skills.google/focuses/163464?parent=catalog&path=4738) — finishes **3 paths**
 - [ ] **45m** — [Discover and Protect Sensitive Data Across Your Ecosystem](https://partner.skills.google/paths/4024/course_templates/1177) — finishes **1 path**, appears in 2
 - [ ] **1.5h** — [Introduction to Gemini Enterprise](https://partner.skills.google/focuses/125095?parent=catalog&path=2310) — finishes **2 paths**
-- [ ] **1.5h** — [Secure Agent Tools with Google Cloud Agent Identity and Auth Manager](https://partner.skills.google/focuses/163464?parent=catalog&path=4738) — finishes **2 paths**
 - [ ] **45m** — [Manage Data Models in Looker](https://partner.skills.google/paths/107/course_templates/651) — finishes **1 path**, appears in 2
 - [ ] **2h** — [Extend Gemini Enterprise assistant capabilities: Challenge Lab](https://partner.skills.google/focuses/120968?parent=catalog&path=4028) — finishes **2 paths**
 - [ ] **1h** — [Migrate a Linux VM using Migrate to Containers](https://partner.skills.google/focuses/74661?parent=catalog&path=4051) — finishes **1 path**
@@ -68,7 +68,7 @@ These do not finish a path on their own, but each one advances several.
 - [ ] **9.3h** — [\[DEPRECATED\] Optimize Database Workloads on Google Cloud](https://partner.skills.google/paths/4366/course_templates/1090) — **17% complete**, in 1 path
 - [ ] **1.3h** — [Deploying and Managing Google Cloud VMware Engine](https://partner.skills.google/paths/4052/course_sessions/42315282/labs/489512) — **3% complete**, in 1 path
 
-## Paths within 2 activities of done (96)
+## Paths within 2 activities of done (97)
 
 - **1 left** — [\[DABE\] \[Federating Identity With External Providers\]](https://partner.skills.google/paths/4023)
 - **1 left** — [\[DABE\] \[Protect PII with Cloud Sensitive Data Protection\]](https://partner.skills.google/paths/4024)
@@ -110,4 +110,4 @@ These do not finish a path on their own, but each one advances several.
 - **1 left** — [Gemini Enterprise for Customer Experience: Conversational Agents, Tools and Webhooks](https://partner.skills.google/paths/2306)
 - **1 left** — [Gemini for customer experience: Agent Assist](https://partner.skills.google/paths/521)
 - **1 left** — [Gemini for customer experience: Customer Experience Insights (CX Insights)](https://partner.skills.google/paths/484)
-- _…and 56 more, see [paths.md](paths.md)_
+- _…and 57 more, see [paths.md](paths.md)_
